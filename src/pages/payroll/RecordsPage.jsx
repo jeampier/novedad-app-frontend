@@ -18,10 +18,10 @@ function printPayslip(record, period) {
     { code: 'HORAS_EXT_DIUR_DOM', label: 'H. extra diurna dom. (75%)' },
     { code: 'HORAS_EXT_NOCT',     label: 'H. extra nocturna (75%)' },
     { code: 'HORAS_EXT_NOCT_DOM', label: 'H. extra nocturna dom. (110%)' },
-    { code: 'HORAS_NOC',          label: 'Recargo nocturno (35%)' },
-    { code: 'HORAS_REC',          label: 'Recargo general (35%)' },
-    { code: 'HORAS_DOM',          label: 'Recargo dom. diurno (75%)' },
-    { code: 'HORAS_REC_DOM_NOCT', label: 'Recargo dom. nocturno (110%)' },
+    { code: 'HORAS_NOC',          label: 'Prima nocturna (35%)' },
+    { code: 'HORAS_REC',          label: 'Prima recargo (35%)' },
+    { code: 'HORAS_DOM',          label: 'Prima dom. diurna (75%)' },
+    { code: 'HORAS_REC_DOM_NOCT', label: 'Prima dom. nocturna (110%)' },
   ].map(c => ({
     ...c,
     value: Number(d.concepts?.[c.code]?.value || 0),
@@ -180,10 +180,10 @@ const EARNING_CONCEPTS = [
   { code: 'HORAS_EXT_DIUR_DOM', label: 'Extra diurna dom. (75%)',    color: '#059669' },
   { code: 'HORAS_EXT_NOCT',     label: 'Extra nocturna (75%)',       color: '#059669' },
   { code: 'HORAS_EXT_NOCT_DOM', label: 'Extra nocturna dom. (110%)', color: '#059669' },
-  { code: 'HORAS_NOC',          label: 'Rec. nocturno (35%)',        color: '#F59E0B' },
-  { code: 'HORAS_REC',          label: 'Rec. general (35%)',         color: '#F59E0B' },
-  { code: 'HORAS_DOM',          label: 'Rec. dom. diurno (75%)',     color: '#F59E0B' },
-  { code: 'HORAS_REC_DOM_NOCT', label: 'Rec. dom. nocturno (110%)', color: '#F59E0B' },
+  { code: 'HORAS_NOC',          label: 'Prima nocturna (35%)',        color: '#F59E0B' },
+  { code: 'HORAS_REC',          label: 'Prima recargo (35%)',         color: '#F59E0B' },
+  { code: 'HORAS_DOM',          label: 'Prima dom. diurna (75%)',     color: '#F59E0B' },
+  { code: 'HORAS_REC_DOM_NOCT', label: 'Prima dom. nocturna (110%)', color: '#F59E0B' },
 ]
 
 function Section({ title, children }) {
