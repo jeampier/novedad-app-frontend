@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { requestsApi } from '../../api/requests'
-import { employees as employeesApi } from '../../api/payroll'
+import { employees as employeesApi, absenceTypes as absenceTypesApi } from '../../api/payroll'
 
 const TYPE_LABELS = { vacaciones: 'Vacaciones', permiso: 'Permiso', incapacidad: 'Incapacidad' }
 const TYPE_COLORS = { vacaciones: '#10B981', permiso: '#F59E0B', incapacidad: '#EF4444' }
@@ -21,8 +21,8 @@ function StatusBadge({ status }) {
   )
 }
 
-function NewRequestModal({ employees, onSave, onClose }) {
-  const [form, setForm] = useState({ type: 'vacaciones', employeeId: '', startDate: '', endDate: '', reason: '' })
+function NewRequestModal({ employees, absTypes, onSave, onClose }) {
+  const [form, setForm] = useState({ type: absTypes[0]?.code || '', employeeId: '', startDate: '', endDate: '', reason: '' })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -51,9 +51,7 @@ function NewRequestModal({ employees, onSave, onClose }) {
           <div>
             <label className="block text-xs font-medium text-gray-500 mb-1">Tipo</label>
             <select value={form.type} onChange={e => set('type', e.target.value)} className={inp}>
-              <option value="vacaciones">Vacaciones</option>
-              <option value="permiso">Permiso</option>
-              <option value="incapacidad">Incapacidad</option>
+              {absTypes.map(t => <option key={t.code} value={t.code}>{t.name}</option>)}
             </select>
           </div>
           <div>
@@ -197,6 +195,7 @@ const TABS = [
 export default function RequestsPage() {
   const [requests,  setRequests]  = useState([])
   const [employees, setEmployees] = useState([])
+  const [absTypes,  setAbsTypes]  = useState([])
   const [tab,       setTab]       = useState('pendiente')
   const [loading,   setLoading]   = useState(true)
   const [showNew,   setShowNew]   = useState(false)
@@ -210,6 +209,7 @@ export default function RequestsPage() {
   useEffect(() => {
     load()
     employeesApi.list().then(setEmployees).catch(() => {})
+    absenceTypesApi.list().then(d => setAbsTypes(d.filter(t => t.active))).catch(() => {})
   }, [])
 
   async function handleCreate(form) {
@@ -311,7 +311,7 @@ export default function RequestsPage() {
       </div>
 
       {showNew && (
-        <NewRequestModal employees={employees} onSave={handleCreate} onClose={() => setShowNew(false)} />
+        <NewRequestModal employees={employees} absTypes={absTypes} onSave={handleCreate} onClose={() => setShowNew(false)} />
       )}
       {reviewing && (
         <ReviewModal
