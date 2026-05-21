@@ -5,6 +5,7 @@ export function useVersionCheck() {
   const [update, setUpdate] = useState(null) // null | { version, notes }
 
   useEffect(() => {
+    if (import.meta.env.DEV) return
     http.get('/version')
       .then(r => {
         const server = r.data.version
