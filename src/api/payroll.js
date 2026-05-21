@@ -77,6 +77,13 @@ export const absenceCodeCatalog = {
   remove: (id) => http.delete(`/payroll/absence-code-catalog/${id}`),
 }
 
+export const rateRules = {
+  list:   ()        => http.get('/payroll/rate-rules').then(r => r.data),
+  create: (d)       => http.post('/payroll/rate-rules', d).then(r => r.data),
+  update: (id, d)   => http.put(`/payroll/rate-rules/${id}`, d).then(r => r.data),
+  remove: (id)      => http.delete(`/payroll/rate-rules/${id}`),
+}
+
 export const employees = {
   list:      ()         => http.get('/employees').then(r => r.data.data),
   get:       (id)       => http.get(`/employees/${id}`).then(r => r.data.data),

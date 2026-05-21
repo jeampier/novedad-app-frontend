@@ -18,6 +18,7 @@ import PeriodsPage     from './pages/payroll/PeriodsPage'
 import RecordsPage          from './pages/payroll/RecordsPage'
 import PayrollSettingsPage  from './pages/payroll/PayrollSettingsPage'
 import AbsenceTypesPage          from './pages/payroll/AbsenceTypesPage'
+import PayrollRateRulesPage      from './pages/payroll/PayrollRateRulesPage'
 import PeriodScheduleGridPage    from './pages/payroll/PeriodScheduleGridPage'
 
 function PrivateRoute({ children }) {
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="/payroll/records"       element={<PrivateRoute><RecordsPage /></PrivateRoute>} />
           <Route path="/payroll/settings"       element={<PrivateRoute><PayrollSettingsPage /></PrivateRoute>} />
           <Route path="/payroll/absence-types" element={<PrivateRoute><AbsenceTypesPage /></PrivateRoute>} />
+          <Route path="/payroll/rate-rules"    element={<PrivateRoute><PayrollRateRulesPage /></PrivateRoute>} />
           <Route path="/payroll/periods/:id/schedule" element={<PrivateRoute><PeriodScheduleGridPage /></PrivateRoute>} />
           <Route path="/admin"                element={<AdminRoute><AdminPage /></AdminRoute>} />
           <Route path="/admin/users"          element={<AdminRoute><UsersPage /></AdminRoute>} />
