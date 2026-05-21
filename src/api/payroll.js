@@ -39,9 +39,10 @@ export const periods = {
 }
 
 export const payroll = {
-  calculate: (periodId) => http.post('/payroll/calculate', { periodId }).then(r => r.data),
-  records:   (periodId) => http.get('/payroll/records', { params: { period_id: periodId } }).then(r => r.data.data),
-  record:    (id)       => http.get(`/payroll/records/${id}`).then(r => r.data.data),
+  calculate:       (periodId)    => http.post('/payroll/calculate', { periodId }).then(r => r.data),
+  records:         (periodId)    => http.get('/payroll/records', { params: { period_id: periodId } }).then(r => r.data.data),
+  record:          (id)          => http.get(`/payroll/records/${id}`).then(r => r.data.data),
+  employeeHistory: (employeeId)  => http.get(`/payroll/records/employee/${employeeId}`).then(r => r.data.data),
   async export(periodId, format) {
     const ext = format === 'xlsx'
       ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

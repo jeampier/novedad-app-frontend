@@ -64,7 +64,8 @@ const payrollModules = [
   { path: '/payroll/absence-types', label: 'Tipos de ausencia' },
   { path: '/payroll/rate-rules',    label: 'Tasas grupo/cargo' },
   { path: '/payroll/periods',       label: 'Períodos' },
-  { path: '/payroll/records',       label: 'Consolidado' },
+  { path: '/payroll/records',         label: 'Consolidado' },
+  { path: '/payroll/employee-history', label: 'Historial empleado' },
   { path: '/payroll/settings',      label: 'Parámetros' },
 ]
 
