@@ -1,6 +1,8 @@
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { useVersionCheck } from '../hooks/useVersionCheck'
+import UpdateBanner from './UpdateBanner'
 
 const mainModules = [
   {
@@ -87,6 +89,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate()
   const location = useLocation()
   const isAdmin = user?.role === 'admin' || user?.roles?.includes('admin')
+  const { update, dismiss } = useVersionCheck()
 
   const inPayroll = location.pathname.startsWith('/payroll')
   const inAdmin   = location.pathname.startsWith('/admin')
@@ -198,6 +201,9 @@ export default function Layout({ children }) {
               <p className="text-indigo-300 text-xs font-light capitalize">{user?.role || 'Usuario'}</p>
             </div>
           </div>
+          <p className="text-white/20 text-xs text-center mb-2">
+            v{import.meta.env.VITE_APP_VERSION}
+          </p>
           <button onClick={handleLogout}
             className="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-indigo-200 hover:bg-white/10 hover:text-white transition-all duration-200 text-sm cursor-pointer border-0 bg-transparent">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -211,7 +217,16 @@ export default function Layout({ children }) {
 
       {/* Contenido */}
       <main className="flex-1 bg-gray-50 min-h-screen" style={{ marginLeft: 240 }}>
-        {children}
+        {update && (
+          <UpdateBanner
+            version={update.version}
+            notes={update.notes}
+            onDismiss={dismiss}
+          />
+        )}
+        <div style={update ? { paddingTop: '3.5rem' } : undefined}>
+          {children}
+        </div>
       </main>
     </div>
   )
