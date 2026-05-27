@@ -42,7 +42,7 @@ export default function PeriodsPage() {
   const [saving, setSaving]     = useState(false)
   const [error, setError]       = useState('')
   const [calculating, setCalculating] = useState(null)
-  const [calcMsg, setCalcMsg]   = useState('')
+  const [calcResult, setCalcResult]   = useState(null)
   const [exporting, setExporting] = useState(null)
   const [importModal, setImportModal] = useState(null)
   const [importFile, setImportFile]   = useState(null)
@@ -73,12 +73,12 @@ export default function PeriodsPage() {
   }
 
   async function handleCalculate(p) {
-    setCalculating(p.id); setCalcMsg('')
+    setCalculating(p.id); setCalcResult(null)
     try {
       const res = await payrollApi.calculate(p.id)
-      setCalcMsg(res.message || 'Cálculo completado')
+      setCalcResult({ ok: true, message: res.message || 'Cálculo completado', warnings: res.warnings || [] })
     } catch (e) {
-      setCalcMsg(e.response?.data?.error || 'Error en el cálculo')
+      setCalcResult({ ok: false, message: e.response?.data?.error || 'Error en el cálculo', warnings: [] })
     }
     setCalculating(null)
   }
@@ -127,9 +127,27 @@ export default function PeriodsPage() {
         </button>
       </div>
 
-      {calcMsg && (
-        <div className="mb-4 px-4 py-3 rounded-xl bg-indigo-50 border border-indigo-100 text-sm text-indigo-700">
-          {calcMsg}
+      {calcResult && (
+        <div className={`mb-4 rounded-xl border overflow-hidden`}>
+          <div className={`px-4 py-3 flex items-center justify-between text-sm font-medium ${calcResult.ok ? 'bg-green-50 border-green-100 text-green-700' : 'bg-red-50 border-red-100 text-red-700'}`}>
+            <span>{calcResult.message}</span>
+            <button onClick={() => setCalcResult(null)} className="text-lg leading-none bg-transparent border-0 cursor-pointer opacity-50 hover:opacity-100">×</button>
+          </div>
+          {calcResult.warnings.length > 0 && (
+            <div className="bg-amber-50 border-t border-amber-100 px-4 py-3">
+              <p className="text-xs font-semibold text-amber-700 mb-2">
+                {calcResult.warnings.length} advertencia{calcResult.warnings.length > 1 ? 's' : ''} — el cálculo se completó pero revisa lo siguiente:
+              </p>
+              <ul className="space-y-1">
+                {calcResult.warnings.map((w, i) => (
+                  <li key={i} className="text-xs text-amber-700 flex items-start gap-1.5">
+                    <span className="shrink-0 mt-0.5">⚠</span>
+                    <span>{w.message}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 

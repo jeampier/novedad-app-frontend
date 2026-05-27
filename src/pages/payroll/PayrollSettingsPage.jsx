@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { payrollSettings as api, absenceCodeCatalog as catalogApi } from '../../api/payroll'
+import { payrollSettings as api, absenceCodeCatalog as catalogApi, validationRules as rulesApi } from '../../api/payroll'
+import { useCommand } from '../../hooks/useCommand'
 import { useAuth } from '../../context/AuthContext'
 
 // Metadatos de cada parámetro: cómo mostrarlo y cómo interpretarlo
@@ -225,6 +226,60 @@ function AbsenceCatalogSection({ isAdmin }) {
   )
 }
 
+function ValidationRulesSection({ isAdmin }) {
+  const [rules,   setRules]   = useState([])
+  const [loading, setLoading] = useState(true)
+  const { execute, loading: saving } = useCommand('UpdateValidationRule')
+
+  function load() {
+    setLoading(true)
+    rulesApi.list().then(setRules).finally(() => setLoading(false))
+  }
+  useEffect(load, [])
+
+  async function toggle(rule) {
+    await execute({ id: rule.id, active: !rule.active })
+    load()
+  }
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="px-5 py-4 border-b border-gray-50">
+        <p className="text-sm font-semibold text-gray-800">Reglas de validación</p>
+        <p className="text-xs text-gray-400 mt-0.5">
+          Controles que se ejecutan antes de cada cálculo de nómina. Las reglas activas generan advertencias visibles en el resultado.
+        </p>
+      </div>
+
+      {loading ? (
+        <div className="py-8 text-center text-sm text-gray-400">Cargando...</div>
+      ) : (
+        <div className="divide-y divide-gray-50">
+          {rules.map(rule => (
+            <div key={rule.id} className="flex items-center gap-4 px-5 py-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-800">{rule.name}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{rule.description}</p>
+              </div>
+              <button
+                onClick={() => isAdmin && toggle(rule)}
+                disabled={saving || !isAdmin}
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-50 ${rule.active ? 'bg-indigo-600' : 'bg-gray-200'}`}
+                title={isAdmin ? (rule.active ? 'Desactivar' : 'Activar') : 'Solo administradores'}
+              >
+                <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${rule.active ? 'translate-x-5' : 'translate-x-0'}`} />
+              </button>
+              <span className={`text-xs font-medium w-16 text-right ${rule.active ? 'text-indigo-600' : 'text-gray-400'}`}>
+                {rule.active ? 'Activa' : 'Inactiva'}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function PayrollSettingsPage() {
   const { user } = useAuth()
   const isAdmin  = user?.role === 'admin' || user?.roles?.includes('admin')
@@ -291,6 +346,7 @@ export default function PayrollSettingsPage() {
           })}
 
           <AbsenceCatalogSection isAdmin={isAdmin} />
+          <ValidationRulesSection isAdmin={isAdmin} />
 
           <p className="text-xs text-gray-400 px-1">
             Última actualización: {settings.length > 0

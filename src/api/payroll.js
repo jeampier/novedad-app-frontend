@@ -85,6 +85,10 @@ export const rateRules = {
   remove: (id)      => http.delete(`/payroll/rate-rules/${id}`),
 }
 
+export const validationRules = {
+  list: () => http.get('/payroll/validation-rules').then(r => r.data.data),
+}
+
 export const employees = {
   list:      ()         => http.get('/employees').then(r => r.data.data),
   get:       (id)       => http.get(`/employees/${id}`).then(r => r.data.data),
