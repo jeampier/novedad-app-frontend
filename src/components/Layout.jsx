@@ -36,6 +36,10 @@ const mainModules = [
       </svg>
     ),
   },
+  { 
+    path: '/contracts', 
+    label: 'Contratos' 
+  },
   {
     path: '/absences',
     label: 'Ausencias',
@@ -244,3 +248,4 @@ export default function Layout({ children }) {
     </div>
   )
 }
+
