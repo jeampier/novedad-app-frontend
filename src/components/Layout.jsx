@@ -88,7 +88,8 @@ const adminModules = [
   { path: '/admin',         label: 'Panel admin' },
   { path: '/admin/users',   label: 'Usuarios' },
   { path: '/admin/roles',   label: 'Roles y permisos' },
-  { path: '/admin/audit',   label: 'Auditoría' },
+  { path: '/admin/audit',        label: 'Auditoría' },
+  { path: '/admin/bulk-import',  label: 'Carga masiva' },
 ]
 
 function ChevronIcon({ open }) {

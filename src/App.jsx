@@ -11,6 +11,7 @@ import AdminPage       from './pages/admin/AdminPage'
 import UsersPage       from './pages/admin/UsersPage'
 import RolesPage       from './pages/admin/RolesPage'
 import AuditPage       from './pages/admin/AuditPage'
+import BulkImportPage  from './pages/admin/BulkImportPage'
 import ConceptsPage    from './pages/payroll/concepts/ConceptsPage'
 import SchedulePage    from './pages/payroll/SchedulePage'
 import ShiftTypesPage  from './pages/payroll/ShiftTypesPage'
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="/admin/users"          element={<AdminRoute><UsersPage /></AdminRoute>} />
           <Route path="/admin/roles"          element={<AdminRoute><RolesPage /></AdminRoute>} />
           <Route path="/admin/audit"          element={<AdminRoute><AuditPage /></AdminRoute>} />
+          <Route path="/admin/bulk-import"   element={<AdminRoute><BulkImportPage /></AdminRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
