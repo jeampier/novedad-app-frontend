@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import http from '../api/client'
+import { version as clientVersion } from '../../package.json'
 
 export function useVersionCheck() {
   const [update, setUpdate] = useState(null) // null | { version, notes }
@@ -9,8 +10,7 @@ export function useVersionCheck() {
     http.get('/version')
       .then(r => {
         const server = r.data.version
-        const client = import.meta.env.VITE_APP_VERSION
-        if (server && client && server !== client) {
+        if (server && server !== clientVersion) {
           setUpdate({ version: server, notes: r.data.notes || [] })
         }
       })
