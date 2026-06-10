@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { payrollSettings as api, absenceCodeCatalog as catalogApi, validationRules as rulesApi } from '../../api/payroll'
 import { useCommand } from '../../hooks/useCommand'
 import { useAuth } from '../../context/AuthContext'
@@ -110,8 +110,8 @@ function SettingRow({ row, meta, onSave, isAdmin }) {
             </span>
             {isAdmin && (
               <button onClick={startEdit}
-                className="px-3 py-1.5 rounded-xl text-xs font-medium text-gray-500 border border-gray-200 bg-white cursor-pointer hover:bg-gray-50 hover:text-indigo-600 hover:border-indigo-200 transition-all">
-                Editar
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-gray-500 border border-gray-200 bg-white cursor-pointer hover:bg-gray-50 hover:text-indigo-600 hover:border-indigo-200 transition-all">
+                <Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar
               </button>
             )}
           </>
@@ -213,8 +213,8 @@ function AbsenceCatalogSection({ isAdmin }) {
                 {isAdmin && (
                   <td className="px-5 py-3 text-center">
                     <button onClick={() => handleDelete(c.id, c.code)}
-                      className="text-xs text-red-400 hover:text-red-600 cursor-pointer bg-transparent border-0">
-                      Eliminar
+                      className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-600 cursor-pointer bg-transparent border-0">
+                      <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> Eliminar
                     </button>
                   </td>
                 )}

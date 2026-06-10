@@ -143,9 +143,9 @@ export default function AccidentsPage() {
           <div className="py-16 text-center">
             <p className="text-gray-400 text-sm mb-3">No hay accidentes registrados</p>
             <button onClick={openModal}
-              className="px-4 py-2 rounded-xl text-white text-sm cursor-pointer border-0"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm cursor-pointer border-0"
               style={{ background: 'linear-gradient(135deg,#991B1B,#DC2626)' }}>
-              Registrar primer accidente
+              <Plus className="w-4 h-4" strokeWidth={2.5} /> Registrar primer accidente
             </button>
           </div>
         ) : (

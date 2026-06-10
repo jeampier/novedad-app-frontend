@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Pencil } from 'lucide-react'
 import http from '../../api/client'
 
 const ROLES = ['admin', 'supervisor', 'operator']
@@ -138,7 +138,7 @@ export default function UsersPage() {
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
-                        <button onClick={() => openEdit(u)} className="text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">Editar</button>
+                        <button onClick={() => openEdit(u)} className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0"><Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar</button>
                         <span className="text-gray-200">|</span>
                         <button onClick={() => openPwd(u)} className="text-xs text-gray-500 hover:underline cursor-pointer bg-transparent border-0 p-0">Contraseña</button>
                         <span className="text-gray-200">|</span>

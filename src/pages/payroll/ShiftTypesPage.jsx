@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { shiftTypes as api } from '../../api/payroll'
 
 const EMPTY = {
@@ -167,12 +167,12 @@ export default function ShiftTypesPage() {
 
               <div className="flex items-center gap-2 pt-3 border-t border-gray-50">
                 <button onClick={() => openEdit(st)}
-                  className="flex-1 py-1.5 rounded-lg text-xs font-medium text-indigo-600 hover:bg-indigo-50 cursor-pointer bg-transparent border border-indigo-100 transition-all">
-                  Editar
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-indigo-600 hover:bg-indigo-50 cursor-pointer bg-transparent border border-indigo-100 transition-all">
+                  <Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar
                 </button>
                 <button onClick={() => handleDelete(st.id)} disabled={deleting === st.id}
-                  className="flex-1 py-1.5 rounded-lg text-xs font-medium text-red-500 hover:bg-red-50 cursor-pointer bg-transparent border border-red-100 transition-all disabled:opacity-40">
-                  {deleting === st.id ? '...' : 'Eliminar'}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-red-500 hover:bg-red-50 cursor-pointer bg-transparent border border-red-100 transition-all disabled:opacity-40">
+                  <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> {deleting === st.id ? '...' : 'Eliminar'}
                 </button>
               </div>
             </div>

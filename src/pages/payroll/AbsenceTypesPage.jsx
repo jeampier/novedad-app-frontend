@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { absenceTypes as api, absenceCodeCatalog as catalogApi } from '../../api/payroll'
 import { useAuth } from '../../context/AuthContext'
 
@@ -226,13 +226,13 @@ export default function AbsenceTypesPage() {
                       <div className="flex items-center justify-center gap-2">
                         <button
                           onClick={() => setModal({ type: t })}
-                          className="text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
-                          Editar
+                          className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
+                          <Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar
                         </button>
                         <button
                           onClick={() => handleDelete(t)}
-                          className="text-xs text-red-400 hover:text-red-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
-                          Eliminar
+                          className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
+                          <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> Eliminar
                         </button>
                       </div>
                     </td>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Pencil } from 'lucide-react'
 import { conceptsApi }  from '../../../api/concepts'
 import RuleEditor       from './RuleEditor'
 import Simulator        from './Simulator'
@@ -388,7 +388,7 @@ export default function ConceptsPage() {
                 </div>
                 <button onClick={() => setConceptModal(selected)}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 cursor-pointer bg-white transition-colors">
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+                  <Pencil className="w-3.5 h-3.5" strokeWidth={2} />
                   Editar
                 </button>
               </div>
@@ -513,8 +513,8 @@ function ConceptCard({ concept: c, onSelect, onEdit, onDelete, onToggle }) {
         </span>
         <div className="flex gap-1.5">
           <button onClick={onEdit}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium text-indigo-600 hover:bg-indigo-50 border border-indigo-100 cursor-pointer bg-white transition-all">
-            Editar
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-indigo-600 hover:bg-indigo-50 border border-indigo-100 cursor-pointer bg-white transition-all">
+            <Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar
           </button>
           <button onClick={() => onSelect(c)}
             className="px-3 py-1.5 rounded-lg text-xs font-medium text-white cursor-pointer border-0 transition-all hover:opacity-90"

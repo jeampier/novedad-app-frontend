@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Pencil } from 'lucide-react'
 import { employees as api } from '../../api/payroll'
 import { shiftTypes as shiftTypesApi } from '../../api/payroll'
 
@@ -218,8 +218,8 @@ export default function EmployeesPage() {
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
                         <button onClick={() => openEdit(emp)}
-                          className="text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
-                          Editar
+                          className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
+                          <Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar
                         </button>
                         <span className="text-gray-200">|</span>
                         <button onClick={() => toggleStatus(emp)}
