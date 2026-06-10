@@ -2,20 +2,28 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { dashboard } from '../api/payroll'
+import {
+  Users, CalendarX, AlertTriangle, Clock3, CalendarRange, FileText, Receipt,
+  CalendarDays, UserX, CalendarMinus, ShieldCheck,
+} from 'lucide-react'
+
+const ICON_PROPS = { className: 'w-5 h-5', strokeWidth: 1.8 }
 
 const modules = [
   { path: '/employees',        label: 'Empleados',    desc: 'Ingresos y retiros',      color: '#4F46E5', bg: '#EEF2FF',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg> },
+    icon: <Users {...ICON_PROPS} /> },
   { path: '/absences',         label: 'Ausencias',    desc: 'Incapacidades y permisos', color: '#0891B2', bg: '#ECFEFF',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="15" x2="15" y2="15"/></svg> },
+    icon: <CalendarX {...ICON_PROPS} /> },
   { path: '/accidents',        label: 'Accidentes',   desc: 'Registro de siniestros',  color: '#DC2626', bg: '#FEF2F2',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> },
+    icon: <AlertTriangle {...ICON_PROPS} /> },
   { path: '/shifts',           label: 'Turnos',       desc: 'Cambios de turno',        color: '#059669', bg: '#ECFDF5',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> },
+    icon: <Clock3 {...ICON_PROPS} /> },
   { path: '/payroll/schedule', label: 'Programación', desc: 'Cuadro operativo',        color: '#7C3AED', bg: '#F5F3FF',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="7" y1="14" x2="7" y2="18"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="17" y1="14" x2="17" y2="18"/></svg> },
+    icon: <CalendarRange {...ICON_PROPS} /> },
+  { path: '/contracts',        label: 'Contratos',    desc: 'Contratos laborales',     color: '#D97706', bg: '#FFFBEB',
+    icon: <FileText {...ICON_PROPS} /> },
   { path: '/payroll/records',  label: 'Nómina',       desc: 'Consolidado y exportación', color: '#0E7490', bg: '#ECFEFF',
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg> },
+    icon: <Receipt {...ICON_PROPS} /> },
 ]
 
 function KpiCard({ label, value, sub, color, bg, icon }) {
@@ -74,26 +82,26 @@ export default function DashboardPage() {
           label="Empleados activos"
           value={loading ? '—' : summary?.activeEmployees ?? '—'}
           color="#4F46E5" bg="#EEF2FF"
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>}
+          icon={<Users {...ICON_PROPS} />}
         />
         <KpiCard
           label={`Ausencias en ${monthName}`}
           value={loading ? '—' : summary?.absencesThisMonth ?? '—'}
           color="#0891B2" bg="#ECFEFF"
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="15" x2="15" y2="15"/></svg>}
+          icon={<CalendarX {...ICON_PROPS} />}
         />
         <KpiCard
           label={`Accidentes en ${monthName}`}
           value={loading ? '—' : summary?.accidentsThisMonth ?? '—'}
           color="#DC2626" bg="#FEF2F2"
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>}
+          icon={<AlertTriangle {...ICON_PROPS} />}
         />
         <KpiCard
           label="Período de nómina"
           value={loading ? '—' : p ? p.name : 'Sin período'}
           sub={p ? `${fmtDate(p.start_date)} — ${fmtDate(p.end_date)}` : undefined}
           color="#059669" bg="#ECFDF5"
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>}
+          icon={<CalendarDays {...ICON_PROPS} />}
         />
       </div>
 
@@ -104,14 +112,14 @@ export default function DashboardPage() {
           value={loading ? '—' : summary?.absencesActiveToday ?? '—'}
           sub="Ausencias vigentes al día de hoy"
           color="#0E7490" bg="#ECFEFF"
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>}
+          icon={<UserX {...ICON_PROPS} />}
         />
         <KpiCard
           label={`Días de ausencia (${monthName})`}
           value={loading ? '—' : summary?.absenceDaysMonth ?? '—'}
           sub="Total días acumulados este mes"
           color="#7C3AED" bg="#F5F3FF"
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}
+          icon={<CalendarMinus {...ICON_PROPS} />}
         />
         <KpiCard
           label="Días sin accidentes"
@@ -119,7 +127,7 @@ export default function DashboardPage() {
           sub={summary?.daysSinceAccident === 0 ? 'Accidente hoy' : summary?.daysSinceAccident > 0 ? 'Días consecutivos seguros' : undefined}
           color={summary?.daysSinceAccident === 0 ? '#DC2626' : '#059669'}
           bg={summary?.daysSinceAccident === 0 ? '#FEF2F2' : '#ECFDF5'}
-          icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>}
+          icon={<ShieldCheck {...ICON_PROPS} />}
         />
       </div>
 
@@ -227,21 +235,21 @@ export default function DashboardPage() {
               value={loading ? '—' : summary?.scheduledEmployees ?? '—'}
               sub="Con turnos activos en el período"
               color="#4F46E5" bg="#EEF2FF"
-              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>}
+              icon={<Users {...ICON_PROPS} />}
             />
             <KpiCard
               label="Días de descanso"
               value={loading ? '—' : summary?.scheduledRestDays ?? '—'}
               sub="Registrados en la programación"
               color="#059669" bg="#ECFDF5"
-              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
+              icon={<CalendarRange {...ICON_PROPS} />}
             />
             <KpiCard
               label="Ausencias en programación"
               value={loading ? '—' : summary?.scheduledAbsenceDays ?? '—'}
               sub="Días marcados como ausencia"
               color="#DC2626" bg="#FEF2F2"
-              icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="15" x2="15" y2="15"/></svg>}
+              icon={<CalendarX {...ICON_PROPS} />}
             />
           </div>
         </div>
