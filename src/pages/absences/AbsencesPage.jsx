@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import http from '../../api/client'
 import { absenceTypes as absenceTypesApi } from '../../api/payroll'
 import { useCommand } from '../../hooks/useCommand'
@@ -113,7 +114,7 @@ export default function AbsencesPage() {
         <button onClick={openModal}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium shadow-sm hover:opacity-90 cursor-pointer border-0"
           style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-          + Registrar ausencia
+          <Plus className="w-4 h-4" strokeWidth={2.5} /> Registrar ausencia
         </button>
       </div>
 

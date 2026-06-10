@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import { payrollSettings as api, absenceCodeCatalog as catalogApi, validationRules as rulesApi } from '../../api/payroll'
 import { useCommand } from '../../hooks/useCommand'
 import { useAuth } from '../../context/AuthContext'
@@ -163,7 +164,7 @@ function AbsenceCatalogSection({ isAdmin }) {
           <button onClick={() => { setShowForm(v => !v); setError('') }}
             className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-medium text-white cursor-pointer border-0"
             style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-            + Agregar
+            <Plus className="w-3.5 h-3.5" strokeWidth={2.5} /> Agregar
           </button>
         )}
       </div>

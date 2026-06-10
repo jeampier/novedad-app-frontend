@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import { absenceTypes as api, absenceCodeCatalog as catalogApi } from '../../api/payroll'
 import { useAuth } from '../../context/AuthContext'
 
@@ -176,9 +177,9 @@ export default function AbsenceTypesPage() {
         {isAdmin && (
           <button
             onClick={() => setModal('create')}
-            className="px-4 py-2.5 rounded-xl text-sm font-medium text-white cursor-pointer border-0 shrink-0 transition-all hover:opacity-90"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white cursor-pointer border-0 shrink-0 transition-all hover:opacity-90"
             style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-            + Nuevo tipo
+            <Plus className="w-4 h-4" strokeWidth={2.5} /> Nuevo tipo
           </button>
         )}
       </div>

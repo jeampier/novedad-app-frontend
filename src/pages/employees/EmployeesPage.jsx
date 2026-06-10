@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import { employees as api } from '../../api/payroll'
 import { shiftTypes as shiftTypesApi } from '../../api/payroll'
 
@@ -141,7 +142,7 @@ export default function EmployeesPage() {
         <button onClick={openCreate}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium shadow-sm hover:opacity-90 cursor-pointer border-0"
           style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-          + Nuevo empleado
+          <Plus className="w-4 h-4" strokeWidth={2.5} /> Nuevo empleado
         </button>
       </div>
 

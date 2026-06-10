@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
+import { Plus } from 'lucide-react'
 import { conceptsApi }  from '../../../api/concepts'
 import RuleEditor       from './RuleEditor'
 import Simulator        from './Simulator'
@@ -284,7 +285,7 @@ export default function ConceptsPage() {
               <button onClick={() => setConceptModal('create')}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium shadow-sm hover:opacity-90 cursor-pointer border-0 shrink-0"
                 style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-                + Nuevo
+                <Plus className="w-4 h-4" strokeWidth={2.5} /> Nuevo
               </button>
             </div>
           ) : (

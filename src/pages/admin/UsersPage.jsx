@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import http from '../../api/client'
 
 const ROLES = ['admin', 'supervisor', 'operator']
@@ -93,7 +94,7 @@ export default function UsersPage() {
         <button onClick={openCreate}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium shadow-sm transition-all hover:opacity-90 cursor-pointer border-0"
           style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-          + Nuevo usuario
+          <Plus className="w-4 h-4" strokeWidth={2.5} /> Nuevo usuario
         </button>
       </div>
 

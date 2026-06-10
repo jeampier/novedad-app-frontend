@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import http from '../../api/client'
 import { useCommand } from '../../hooks/useCommand'
 import EmployeeSelect from '../../components/EmployeeSelect'
@@ -97,7 +98,7 @@ export default function AccidentsPage() {
         <button onClick={openModal}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium shadow-sm hover:opacity-90 cursor-pointer border-0"
           style={{ background: 'linear-gradient(135deg,#991B1B,#DC2626)' }}>
-          + Registrar accidente
+          <Plus className="w-4 h-4" strokeWidth={2.5} /> Registrar accidente
         </button>
       </div>
 

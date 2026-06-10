@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import { requestsApi } from '../../api/requests'
 import { employees as employeesApi, absenceTypes as absenceTypesApi } from '../../api/payroll'
 
@@ -249,7 +250,7 @@ export default function RequestsPage() {
         </div>
         <button onClick={() => setShowNew(true)}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer border-0">
-          + Nueva solicitud
+          <Plus className="w-4 h-4" strokeWidth={2.5} /> Nueva solicitud
         </button>
       </div>
 
