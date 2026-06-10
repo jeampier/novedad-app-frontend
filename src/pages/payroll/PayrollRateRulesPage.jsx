@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { rateRules as api } from '../../api/payroll'
 
 const MULTIPLIERS = [
@@ -158,7 +159,7 @@ export default function PayrollRateRulesPage() {
         </div>
         <button onClick={() => setModal('new')}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer border-0 transition-all">
-          + Nueva regla
+          <Plus className="w-4 h-4" strokeWidth={2.5} /> Nueva regla
         </button>
       </div>
 
@@ -205,12 +206,12 @@ export default function PayrollRateRulesPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <button onClick={() => setModal(r)}
-                          className="text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
-                          Editar
+                          className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
+                          <Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar
                         </button>
                         <button onClick={() => handleDelete(r)} disabled={deleting === r.id}
-                          className="text-xs text-red-500 hover:underline cursor-pointer bg-transparent border-0 p-0 disabled:opacity-40">
-                          {deleting === r.id ? '...' : 'Eliminar'}
+                          className="inline-flex items-center gap-1 text-xs text-red-500 hover:underline cursor-pointer bg-transparent border-0 p-0 disabled:opacity-40">
+                          <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> {deleting === r.id ? '...' : 'Eliminar'}
                         </button>
                       </div>
                     </td>

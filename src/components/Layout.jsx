@@ -3,93 +3,42 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useVersionCheck } from '../hooks/useVersionCheck'
 import UpdateBanner from './UpdateBanner'
+import {
+  LayoutDashboard, Users, ClipboardList, FileText, CalendarX, AlertTriangle, Clock3,
+  BadgeDollarSign, CalendarRange, Repeat, CalendarMinus, Percent, CalendarDays, BarChart3,
+  History, Settings2, MonitorCog, UserCog, ShieldCheck, ScrollText, UploadCloud, LogOut,
+} from 'lucide-react'
+
+const ICON_PROPS = { className: 'w-5 h-5', strokeWidth: 1.8 }
 
 const mainModules = [
-  {
-    path: '/',
-    label: 'Dashboard',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-        <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
-        <rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" />
-      </svg>
-    ),
-  },
-  {
-    path: '/employees',
-    label: 'Empleados',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-        <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0-3-3.85" />
-      </svg>
-    ),
-  },
-  {
-    path: '/requests',
-    label: 'Solicitudes',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>
-      </svg>
-    ),
-  },
-  { 
-    path: '/contracts', 
-    label: 'Contratos' 
-  },
-  {
-    path: '/absences',
-    label: 'Ausencias',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-        <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" />
-        <line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-        <line x1="9" y1="15" x2="15" y2="15" />
-      </svg>
-    ),
-  },
-  {
-    path: '/accidents',
-    label: 'Accidentes',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-        <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
-      </svg>
-    ),
-  },
-  {
-    path: '/shifts',
-    label: 'Turnos',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-        <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-      </svg>
-    ),
-  },
+  { path: '/',          label: 'Dashboard',  icon: <LayoutDashboard {...ICON_PROPS} /> },
+  { path: '/employees', label: 'Empleados',  icon: <Users {...ICON_PROPS} /> },
+  { path: '/requests',  label: 'Solicitudes', icon: <ClipboardList {...ICON_PROPS} /> },
+  { path: '/contracts', label: 'Contratos',  icon: <FileText {...ICON_PROPS} /> },
+  { path: '/absences',  label: 'Ausencias',  icon: <CalendarX {...ICON_PROPS} /> },
+  { path: '/accidents', label: 'Accidentes', icon: <AlertTriangle {...ICON_PROPS} /> },
+  { path: '/shifts',    label: 'Turnos',     icon: <Clock3 {...ICON_PROPS} /> },
 ]
 
 const payrollModules = [
-  { path: '/payroll/concepts',      label: 'Conceptos' },
-  { path: '/payroll/schedule',      label: 'Programación' },
-  { path: '/payroll/shift-types',   label: 'Tipos de turno' },
-  { path: '/payroll/absence-types', label: 'Tipos de ausencia' },
-  { path: '/payroll/rate-rules',    label: 'Tasas grupo/cargo' },
-  { path: '/payroll/periods',       label: 'Períodos' },
-  { path: '/payroll/records',         label: 'Consolidado' },
-  { path: '/payroll/employee-history', label: 'Historial empleado' },
-  { path: '/payroll/settings',      label: 'Parámetros' },
+  { path: '/payroll/concepts',      label: 'Conceptos',         icon: <BadgeDollarSign {...ICON_PROPS} /> },
+  { path: '/payroll/schedule',      label: 'Programación',      icon: <CalendarRange {...ICON_PROPS} /> },
+  { path: '/payroll/shift-types',   label: 'Tipos de turno',    icon: <Repeat {...ICON_PROPS} /> },
+  { path: '/payroll/absence-types', label: 'Tipos de ausencia', icon: <CalendarMinus {...ICON_PROPS} /> },
+  { path: '/payroll/rate-rules',    label: 'Tasas grupo/cargo', icon: <Percent {...ICON_PROPS} /> },
+  { path: '/payroll/periods',       label: 'Períodos',          icon: <CalendarDays {...ICON_PROPS} /> },
+  { path: '/payroll/records',         label: 'Consolidado',       icon: <BarChart3 {...ICON_PROPS} /> },
+  { path: '/payroll/employee-history', label: 'Historial empleado', icon: <History {...ICON_PROPS} /> },
+  { path: '/payroll/settings',      label: 'Parámetros',        icon: <Settings2 {...ICON_PROPS} /> },
 ]
 
 const adminModules = [
-  { path: '/admin',         label: 'Panel admin' },
-  { path: '/admin/users',   label: 'Usuarios' },
-  { path: '/admin/roles',   label: 'Roles y permisos' },
-  { path: '/admin/audit',        label: 'Auditoría' },
-  { path: '/admin/bulk-import',  label: 'Carga masiva' },
+  { path: '/admin',         label: 'Panel admin',     icon: <MonitorCog {...ICON_PROPS} /> },
+  { path: '/admin/users',   label: 'Usuarios',        icon: <UserCog {...ICON_PROPS} /> },
+  { path: '/admin/roles',   label: 'Roles y permisos', icon: <ShieldCheck {...ICON_PROPS} /> },
+  { path: '/admin/audit',        label: 'Auditoría',  icon: <ScrollText {...ICON_PROPS} /> },
+  { path: '/admin/bulk-import',  label: 'Carga masiva', icon: <UploadCloud {...ICON_PROPS} /> },
 ]
 
 function ChevronIcon({ open }) {
@@ -173,7 +122,7 @@ export default function Layout({ children }) {
                       `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ` +
                       (isActive ? 'bg-white/15 text-white shadow-sm' : 'text-indigo-300 hover:bg-white/8 hover:text-white')
                     }>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                    {m.icon}
                     {m.label}
                   </NavLink>
                 ))}
@@ -198,7 +147,7 @@ export default function Layout({ children }) {
                         `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ` +
                         (isActive ? 'bg-white/15 text-white shadow-sm' : 'text-indigo-300 hover:bg-white/8 hover:text-white')
                       }>
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                      {m.icon}
                       {m.label}
                     </NavLink>
                   ))}
@@ -224,10 +173,7 @@ export default function Layout({ children }) {
           </p>
           <button onClick={handleLogout}
             className="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-indigo-200 hover:bg-white/10 hover:text-white transition-all duration-200 text-sm cursor-pointer border-0 bg-transparent">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
+            <LogOut className="w-4 h-4" strokeWidth={1.8} />
             Cerrar sesión
           </button>
         </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import * as contractsApi from '../../api/contracts'
 import { employees as employeesApi } from '../../api/payroll'
 
@@ -207,7 +208,7 @@ import { employees as employeesApi } from '../../api/payroll'
           </div>
           <button onClick={() => setShowNew(true)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer border-0">
-            + Nuevo contrato
+            <Plus className="w-4 h-4" strokeWidth={2.5} /> Nuevo contrato
           </button>
         </div>
 

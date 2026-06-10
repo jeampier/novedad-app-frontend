@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Plus } from 'lucide-react'
 import { periods as api, payroll as payrollApi } from '../../api/payroll'
 
 const inp = "w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-700 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all"
@@ -123,7 +124,7 @@ export default function PeriodsPage() {
         <button onClick={() => { setForm({ name:'', startDate:'', endDate:'' }); setError(''); setModal(true) }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium shadow-sm hover:opacity-90 cursor-pointer border-0"
           style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-          + Nuevo período
+          <Plus className="w-4 h-4" strokeWidth={2.5} /> Nuevo período
         </button>
       </div>
 

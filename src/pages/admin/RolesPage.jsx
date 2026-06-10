@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Plus } from 'lucide-react'
 import http from '../../api/client'
 
 const MODULES  = ['dashboard', 'employees', 'absences', 'accidents', 'shifts', 'admin']
@@ -85,8 +86,8 @@ export default function RolesPage() {
             <div className="px-4 py-3 border-b border-gray-50 flex items-center justify-between">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Roles</p>
               <button onClick={() => setShowNew(v => !v)}
-                className="text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
-                + Nuevo
+                className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
+                <Plus className="w-3.5 h-3.5" strokeWidth={2.5} /> Nuevo
               </button>
             </div>
             {showNew && (
