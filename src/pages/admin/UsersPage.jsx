@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Pencil } from 'lucide-react'
+import { Plus, Pencil, KeyRound, UserCheck, UserX } from 'lucide-react'
 import http from '../../api/client'
 
 const ROLES = ['admin', 'supervisor', 'operator']
@@ -140,11 +140,13 @@ export default function UsersPage() {
                       <div className="flex items-center gap-2">
                         <button onClick={() => openEdit(u)} className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0"><Pencil className="w-3.5 h-3.5" strokeWidth={2} /> Editar</button>
                         <span className="text-gray-200">|</span>
-                        <button onClick={() => openPwd(u)} className="text-xs text-gray-500 hover:underline cursor-pointer bg-transparent border-0 p-0">Contraseña</button>
+                        <button onClick={() => openPwd(u)} className="inline-flex items-center gap-1 text-xs text-gray-500 hover:underline cursor-pointer bg-transparent border-0 p-0"><KeyRound className="w-3.5 h-3.5" strokeWidth={2} /> Contraseña</button>
                         <span className="text-gray-200">|</span>
                         <button onClick={() => toggleStatus(u)}
-                          className={`text-xs cursor-pointer bg-transparent border-0 p-0 hover:underline ${u.status === 'active' ? 'text-red-500' : 'text-green-600'}`}>
-                          {u.status === 'active' ? 'Desactivar' : 'Activar'}
+                          className={`inline-flex items-center gap-1 text-xs cursor-pointer bg-transparent border-0 p-0 hover:underline ${u.status === 'active' ? 'text-red-500' : 'text-green-600'}`}>
+                          {u.status === 'active'
+                            ? <><UserX className="w-3.5 h-3.5" strokeWidth={2} /> Desactivar</>
+                            : <><UserCheck className="w-3.5 h-3.5" strokeWidth={2} /> Activar</>}
                         </button>
                       </div>
                     </td>

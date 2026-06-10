@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, CheckCircle2, AlertCircle } from 'lucide-react'
 import http from '../../api/client'
 import { useCommand } from '../../hooks/useCommand'
 import EmployeeSelect from '../../components/EmployeeSelect'
@@ -104,7 +104,7 @@ export default function AccidentsPage() {
 
       {success && (
         <div className="mb-5 flex items-center gap-2 px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-sm text-emerald-700">
-          <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+          <CheckCircle2 className="w-4 h-4 shrink-0" strokeWidth={2} />
           {success}
         </div>
       )}
@@ -239,7 +239,7 @@ export default function AccidentsPage() {
 
             {error && (
               <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600">
-                <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>
+                <AlertCircle className="w-4 h-4 shrink-0" strokeWidth={2} />
                 {error}
               </div>
             )}

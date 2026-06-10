@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Pencil } from 'lucide-react'
+import { Plus, Pencil, AlertCircle, UserCheck, UserX } from 'lucide-react'
 import { employees as api } from '../../api/payroll'
 import { shiftTypes as shiftTypesApi } from '../../api/payroll'
 
@@ -223,8 +223,10 @@ export default function EmployeesPage() {
                         </button>
                         <span className="text-gray-200">|</span>
                         <button onClick={() => toggleStatus(emp)}
-                          className={`text-xs cursor-pointer bg-transparent border-0 p-0 hover:underline ${emp.status === 'active' ? 'text-red-500' : 'text-green-600'}`}>
-                          {emp.status === 'active' ? 'Desactivar' : 'Activar'}
+                          className={`inline-flex items-center gap-1 text-xs cursor-pointer bg-transparent border-0 p-0 hover:underline ${emp.status === 'active' ? 'text-red-500' : 'text-green-600'}`}>
+                          {emp.status === 'active'
+                            ? <><UserX className="w-3.5 h-3.5" strokeWidth={2} /> Desactivar</>
+                            : <><UserCheck className="w-3.5 h-3.5" strokeWidth={2} /> Activar</>}
                         </button>
                       </div>
                     </td>
@@ -315,7 +317,7 @@ export default function EmployeesPage() {
 
             {error && (
               <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600">
-                <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>
+                <AlertCircle className="w-4 h-4 shrink-0" strokeWidth={2} />
                 {error}
               </div>
             )}

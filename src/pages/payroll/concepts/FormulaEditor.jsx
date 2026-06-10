@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { CheckCircle2, AlertCircle } from 'lucide-react'
 
 function groupBy(arr, key) {
   return arr.reduce((acc, item) => {
@@ -143,13 +144,13 @@ export default function FormulaEditor({ value, onChange, variables = [], onValid
           {validating && <p className="text-xs text-gray-400 flex items-center gap-1.5"><span className="animate-pulse">●</span> Validando...</p>}
           {!validating && validation?.valid  === true  && (
             <p className="text-xs text-emerald-600 flex items-center gap-1.5">
-              <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+              <CheckCircle2 className="w-4 h-4" strokeWidth={2} />
               Fórmula válida
             </p>
           )}
           {!validating && validation?.valid  === false && (
             <p className="text-xs text-red-500 flex items-center gap-1.5">
-              <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>
+              <AlertCircle className="w-4 h-4" strokeWidth={2} />
               {validation.error}
             </p>
           )}
