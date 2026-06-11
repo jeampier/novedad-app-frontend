@@ -14,10 +14,17 @@ const DOC_TYPES = [
   { value: 'NIT', label: 'NIT' },
 ]
 
+const ACCOUNT_TYPES = [
+  { value: '',          label: 'Sin especificar' },
+  { value: 'Ahorros',   label: 'Ahorros' },
+  { value: 'Corriente', label: 'Corriente' },
+]
+
 const EMPTY = {
   firstName: '', lastName: '', documentType: 'CC', document: '',
   position: '', area: '', groupName: '', shiftTypeId: '',
   startDate: '', baseSalary: '', smmlv: '', phone: '', email: '',
+  bankName: '', accountType: '', accountNumber: '',
 }
 
 function initials(emp) {
@@ -96,6 +103,9 @@ export default function EmployeesPage() {
       smmlv:        emp.smmlv       || '',
       phone:        emp.phone       || '',
       email:        emp.email       || '',
+      bankName:     emp.bank_name      || '',
+      accountType:  emp.account_type   || '',
+      accountNumber: emp.account_number || '',
     })
     setError(''); setModal(emp)
   }
@@ -311,6 +321,27 @@ export default function EmployeesPage() {
                 <div>
                   <label className="text-xs text-gray-500 mb-1.5 block">SMMLV aplicable</label>
                   <input className={inp} type="number" placeholder="1300000" {...fld('smmlv')} />
+                </div>
+              </div>
+            </div>
+
+            {/* Datos bancarios */}
+            <div>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Datos bancarios</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-gray-500 mb-1.5 block">Banco</label>
+                  <input className={inp} placeholder="Ej: Bancolombia" {...fld('bankName')} />
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-1.5 block">Tipo de cuenta</label>
+                  <select className={sel} {...fld('accountType')}>
+                    {ACCOUNT_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                  </select>
+                </div>
+                <div className="col-span-2">
+                  <label className="text-xs text-gray-500 mb-1.5 block">Número de cuenta</label>
+                  <input className={inp} placeholder="Ej: 12345678901" {...fld('accountNumber')} />
                 </div>
               </div>
             </div>
