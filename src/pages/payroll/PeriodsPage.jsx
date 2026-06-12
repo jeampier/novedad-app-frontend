@@ -48,6 +48,8 @@ export default function PeriodsPage() {
   const [importModal, setImportModal] = useState(null)
   const [importFile, setImportFile]   = useState(null)
   const [importing, setImporting]     = useState(false)
+  const [previewing, setPreviewing]   = useState(false)
+  const [importPreview, setImportPreview] = useState(null)
   const [importResult, setImportResult] = useState(null)
   const [importError, setImportError]   = useState('')
 
@@ -94,16 +96,35 @@ export default function PeriodsPage() {
   function openImport(p) {
     setImportModal(p)
     setImportFile(null)
+    setImportPreview(null)
     setImportResult(null)
     setImportError('')
   }
 
-  async function handleImport() {
+  async function handlePreview() {
     if (!importFile) { setImportError('Selecciona un archivo .xlsx'); return }
-    setImporting(true); setImportError(''); setImportResult(null)
+    setPreviewing(true); setImportError(''); setImportPreview(null)
     try {
-      const result = await api.importSchedule(importModal.id, importFile)
+      const result = await api.importSchedule(importModal.id, importFile, { dryRun: true })
+      setImportPreview(result)
+    } catch (e) {
+      setImportError(e.response?.data?.error || 'Error al generar la vista previa')
+    } finally {
+      setPreviewing(false)
+    }
+  }
+
+  function cancelPreview() {
+    setImportPreview(null)
+    setImportError('')
+  }
+
+  async function handleConfirm() {
+    setImporting(true); setImportError('')
+    try {
+      const result = await api.importSchedule(importModal.id, importFile, { dryRun: false })
       setImportResult(result)
+      setImportPreview(null)
       setImportFile(null)
     } catch (e) {
       setImportError(e.response?.data?.error || 'Error al importar')
@@ -204,7 +225,7 @@ export default function PeriodsPage() {
                   <button onClick={() => openImport(p)}
                     className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium cursor-pointer border border-indigo-200 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-all">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-3.5 h-3.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Importar descansos
+                    Importar novedades
                   </button>
                   <button onClick={() => toggleStatus(p)}
                     className={`px-3 py-2 rounded-xl text-xs font-medium cursor-pointer border transition-all ${p.status === 'open' ? 'border-red-200 text-red-600 bg-red-50 hover:bg-red-100' : 'border-blue-200 text-blue-600 bg-blue-50 hover:bg-blue-100'}`}>
@@ -218,31 +239,13 @@ export default function PeriodsPage() {
       )}
 
       {importModal && (
-        <Modal title={`Importar descansos — ${importModal.name}`} onClose={() => setImportModal(null)}>
+        <Modal title={`Importar novedades — ${importModal.name}`} onClose={() => setImportModal(null)}>
           <div className="flex flex-col gap-4">
             <p className="text-xs text-gray-500">
               Selecciona el cuadro de descansos en formato <strong>.xlsx</strong>. Se importarán los días del período <strong>{fmt(importModal.start_date)} — {fmt(importModal.end_date)}</strong>.
             </p>
 
-            {!importResult ? (
-              <>
-                <label className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all ${importFile ? 'border-indigo-400 bg-indigo-50' : 'border-gray-200 hover:border-indigo-300 hover:bg-gray-50'}`}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" className={`w-8 h-8 ${importFile ? 'text-indigo-500' : 'text-gray-300'}`}>
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-                  </svg>
-                  <span className="text-xs text-gray-500 text-center">
-                    {importFile ? importFile.name : 'Haz clic para seleccionar el archivo .xlsx'}
-                  </span>
-                  <input type="file" accept=".xlsx" className="hidden" onChange={e => { setImportFile(e.target.files[0]); setImportError('') }} />
-                </label>
-                {importError && <p className="text-red-500 text-xs">{importError}</p>}
-                <button onClick={handleImport} disabled={importing || !importFile}
-                  className="w-full py-3 rounded-xl text-white text-sm font-medium cursor-pointer border-0 disabled:opacity-60"
-                  style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
-                  {importing ? 'Importando...' : 'Importar'}
-                </button>
-              </>
-            ) : (
+            {importResult ? (
               <div className="flex flex-col gap-3">
                 <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                   <p className="text-sm font-semibold text-green-700">Importación completada</p>
@@ -261,6 +264,78 @@ export default function PeriodsPage() {
                   Cerrar
                 </button>
               </div>
+            ) : importPreview ? (
+              <div className="flex flex-col gap-3">
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-center">
+                    <p className="text-lg font-semibold text-green-700">{importPreview.summary.new}</p>
+                    <p className="text-xs text-green-600">nuevas</p>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-center">
+                    <p className="text-lg font-semibold text-gray-700">{importPreview.summary.unchanged}</p>
+                    <p className="text-xs text-gray-500">sin cambios</p>
+                  </div>
+                  <div className={`rounded-xl p-3 text-center border ${importPreview.summary.changed > 0 ? 'bg-amber-50 border-amber-200' : 'bg-gray-50 border-gray-200'}`}>
+                    <p className={`text-lg font-semibold ${importPreview.summary.changed > 0 ? 'text-amber-700' : 'text-gray-700'}`}>{importPreview.summary.changed}</p>
+                    <p className={`text-xs ${importPreview.summary.changed > 0 ? 'text-amber-600' : 'text-gray-500'}`}>modificadas</p>
+                  </div>
+                </div>
+
+                {importPreview.changes?.length > 0 && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                    <p className="text-xs font-semibold text-amber-700 mb-1">Cambios sobre la Programación existente ({importPreview.summary.changed})</p>
+                    <ul className="text-xs text-amber-600 space-y-0.5 max-h-40 overflow-y-auto">
+                      {importPreview.changes.map((c, i) => (
+                        <li key={i}>• {c.employeeName} — {fmt(c.scheduleDate)}: {c.before} → {c.after}</li>
+                      ))}
+                    </ul>
+                    {importPreview.truncated && (
+                      <p className="text-xs text-amber-500 mt-1">y {importPreview.summary.changed - importPreview.changes.length} más...</p>
+                    )}
+                  </div>
+                )}
+
+                {importPreview.unmatchedEmployees?.length > 0 && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                    <p className="text-xs font-semibold text-amber-700 mb-1">Empleados no encontrados ({importPreview.unmatchedEmployees.length})</p>
+                    <ul className="text-xs text-amber-600 space-y-0.5 max-h-32 overflow-y-auto">
+                      {importPreview.unmatchedEmployees.map((n, i) => <li key={i}>• {n}</li>)}
+                    </ul>
+                  </div>
+                )}
+
+                {importError && <p className="text-red-500 text-xs">{importError}</p>}
+
+                <div className="flex gap-2">
+                  <button onClick={cancelPreview} disabled={importing}
+                    className="flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-60">
+                    Cancelar
+                  </button>
+                  <button onClick={handleConfirm} disabled={importing}
+                    className="flex-1 py-2.5 rounded-xl text-white text-sm font-medium cursor-pointer border-0 disabled:opacity-60"
+                    style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
+                    {importing ? 'Importando...' : 'Confirmar e importar'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <label className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all ${importFile ? 'border-indigo-400 bg-indigo-50' : 'border-gray-200 hover:border-indigo-300 hover:bg-gray-50'}`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" className={`w-8 h-8 ${importFile ? 'text-indigo-500' : 'text-gray-300'}`}>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  <span className="text-xs text-gray-500 text-center">
+                    {importFile ? importFile.name : 'Haz clic para seleccionar el archivo .xlsx'}
+                  </span>
+                  <input type="file" accept=".xlsx" className="hidden" onChange={e => { setImportFile(e.target.files[0]); setImportError('') }} />
+                </label>
+                {importError && <p className="text-red-500 text-xs">{importError}</p>}
+                <button onClick={handlePreview} disabled={previewing || !importFile}
+                  className="w-full py-3 rounded-xl text-white text-sm font-medium cursor-pointer border-0 disabled:opacity-60"
+                  style={{ background: 'linear-gradient(135deg,#02005B,#0d0080)' }}>
+                  {previewing ? 'Generando vista previa...' : 'Vista previa'}
+                </button>
+              </>
             )}
           </div>
         </Modal>

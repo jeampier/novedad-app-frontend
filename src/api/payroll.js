@@ -30,9 +30,10 @@ export const periods = {
   create:         (d)       => http.post('/payroll/periods', d).then(r => r.data.data),
   close:          (id)      => http.patch(`/payroll/periods/${id}/close`).then(r => r.data.data),
   reopen:         (id)      => http.patch(`/payroll/periods/${id}/reopen`).then(r => r.data.data),
-  importSchedule: (id, file) => {
+  importSchedule: (id, file, { dryRun = false } = {}) => {
     const form = new FormData()
     form.append('file', file)
+    if (dryRun) form.append('dryRun', 'true')
     return http.post(`/payroll/periods/${id}/import-schedule`, form).then(r => r.data.data)
   },
   scheduleGrid: (id) => http.get(`/payroll/periods/${id}/schedule-grid`).then(r => r.data.data),
