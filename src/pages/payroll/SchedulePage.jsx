@@ -33,9 +33,11 @@ function processData(rows, year, month) {
       empMap[row.employee_id] = {
         id: row.employee_id, name: row.employee_name,
         position: row.position, group: row.group_name,
+        area: row.area, status: row.status, hasSchedule: false,
       }
     }
     if (row.schedule_date) {
+      empMap[row.employee_id].hasSchedule = true
       const d = parseInt(row.schedule_date.split('-')[2])
       schedMap[`${row.employee_id}_${d}`] = {
         id: row.id, shiftTypeId: row.shift_type_id,
@@ -178,6 +180,11 @@ export default function SchedulePage() {
   const [employees, setEmployees] = useState([])
   const [days, setDays] = useState([])
   const [filterGroup, setFilterGroup] = useState('')
+  const [filterArea, setFilterArea] = useState('')
+  const [filterPosition, setFilterPosition] = useState('')
+  const [filterStatus, setFilterStatus] = useState('active')
+  const [onlyUnscheduled, setOnlyUnscheduled] = useState(false)
+  const [search, setSearch] = useState('')
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -206,8 +213,19 @@ export default function SchedulePage() {
 
   useEffect(() => { load() }, [load])
 
-  const groups = [...new Set(employees.map(e => e.group).filter(Boolean))]
-  const visibleEmps = filterGroup ? employees.filter(e => e.group === filterGroup) : employees
+  const groups    = [...new Set(employees.map(e => e.group).filter(Boolean))]
+  const areas     = [...new Set(employees.map(e => e.area).filter(Boolean))]
+  const positions = [...new Set(employees.map(e => e.position).filter(Boolean))].sort()
+
+  const visibleEmps = employees.filter(e => {
+    if (filterGroup && e.group !== filterGroup) return false
+    if (filterArea && e.area !== filterArea) return false
+    if (filterPosition && e.position !== filterPosition) return false
+    if (filterStatus !== 'all' && e.status !== filterStatus) return false
+    if (onlyUnscheduled && e.hasSchedule) return false
+    if (search && !e.name.toLowerCase().includes(search.toLowerCase())) return false
+    return true
+  })
 
   function prevMonth() {
     if (month === 1) { setYear(y => y - 1); setMonth(12) }
@@ -275,26 +293,60 @@ export default function SchedulePage() {
           <p className="text-xs font-medium text-indigo-600 uppercase tracking-widest mb-1">Nómina</p>
           <h1 className="text-2xl font-semibold text-gray-800">Programación de turnos</h1>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          {groups.length > 0 && (
-            <select value={filterGroup} onChange={e => setFilterGroup(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 bg-white outline-none focus:border-indigo-500 transition-all">
-              <option value="">Todos los grupos</option>
-              {groups.map(g => <option key={g} value={g}>{g}</option>)}
-            </select>
-          )}
-          <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl px-1 py-1">
-            <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-gray-100 cursor-pointer border-0 bg-transparent text-gray-600 transition-all">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-4 h-4"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <span className="text-sm font-medium text-gray-700 px-2 min-w-28 text-center">
-              {MONTHS[month - 1]} {year}
-            </span>
-            <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-gray-100 cursor-pointer border-0 bg-transparent text-gray-600 transition-all">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-4 h-4"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
+        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-xl px-1 py-1">
+          <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-gray-100 cursor-pointer border-0 bg-transparent text-gray-600 transition-all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-4 h-4"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span className="text-sm font-medium text-gray-700 px-2 min-w-28 text-center">
+            {MONTHS[month - 1]} {year}
+          </span>
+          <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-gray-100 cursor-pointer border-0 bg-transparent text-gray-600 transition-all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="w-4 h-4"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex items-center gap-3 flex-wrap mb-4">
+        <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Buscar por nombre..."
+          className="px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 bg-white outline-none focus:border-indigo-500 transition-all" />
+
+        {groups.length > 0 && (
+          <select value={filterGroup} onChange={e => setFilterGroup(e.target.value)}
+            className="px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 bg-white outline-none focus:border-indigo-500 transition-all">
+            <option value="">Todos los grupos</option>
+            {groups.map(g => <option key={g} value={g}>{g}</option>)}
+          </select>
+        )}
+
+        {areas.length > 0 && (
+          <select value={filterArea} onChange={e => setFilterArea(e.target.value)}
+            className="px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 bg-white outline-none focus:border-indigo-500 transition-all">
+            <option value="">Todas las áreas</option>
+            {areas.map(a => <option key={a} value={a}>{a}</option>)}
+          </select>
+        )}
+
+        {positions.length > 0 && (
+          <select value={filterPosition} onChange={e => setFilterPosition(e.target.value)}
+            className="px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 bg-white outline-none focus:border-indigo-500 transition-all">
+            <option value="">Todos los cargos</option>
+            {positions.map(p => <option key={p} value={p}>{p}</option>)}
+          </select>
+        )}
+
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
+          className="px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 bg-white outline-none focus:border-indigo-500 transition-all">
+          <option value="active">Activos</option>
+          <option value="inactive">Inactivos</option>
+          <option value="all">Todos los estados</option>
+        </select>
+
+        <label className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 bg-white cursor-pointer select-none">
+          <input type="checkbox" checked={onlyUnscheduled} onChange={e => setOnlyUnscheduled(e.target.checked)} />
+          Sin programar este mes
+        </label>
       </div>
 
       {/* Legend */}
@@ -321,7 +373,9 @@ export default function SchedulePage() {
         {loading ? (
           <div className="py-20 text-center text-sm text-gray-400">Cargando programación...</div>
         ) : employees.length === 0 ? (
-          <div className="py-20 text-center text-sm text-gray-400">No hay empleados activos</div>
+          <div className="py-20 text-center text-sm text-gray-400">No hay empleados</div>
+        ) : visibleEmps.length === 0 ? (
+          <div className="py-20 text-center text-sm text-gray-400">Ningún empleado coincide con los filtros</div>
         ) : (
           <div className="overflow-x-auto" style={{ maxWidth: '100%' }}>
             <table className="border-collapse" style={{ minWidth: 900 }}>
