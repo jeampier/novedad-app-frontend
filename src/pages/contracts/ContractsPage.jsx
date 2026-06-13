@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, FileDown } from 'lucide-react'
 import * as contractsApi from '../../api/contracts'
 import { employees as employeesApi } from '../../api/payroll'
 
@@ -163,6 +163,7 @@ import { employees as employeesApi } from '../../api/payroll'
     const [loading,    setLoading]    = useState(true)
     const [showNew,    setShowNew]    = useState(false)
     const [changing,   setChanging]   = useState(null)
+    const [downloading, setDownloading] = useState(null)
 
     async function load() {
       setLoading(true)
@@ -187,6 +188,21 @@ import { employees as employeesApi } from '../../api/payroll'
     async function handleChangeStatus(status) {
       await contractsApi.updateStatus(changing.id, status)
       await load()
+    }
+
+    async function handleDownloadPdf(contract) {
+      setDownloading(contract.id)
+      try {
+        const blob = await contractsApi.downloadPdf(contract.id)
+        const url  = URL.createObjectURL(blob)
+        const a    = document.createElement('a')
+        a.href = url
+        a.download = `contrato_${contract.first_name}_${contract.last_name}_${contract.id}.pdf`
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        URL.revokeObjectURL(url)
+      } finally { setDownloading(null) }
     }
 
     const filtered = contracts
@@ -276,12 +292,19 @@ import { employees as employeesApi } from '../../api/payroll'
                       <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{c.end_date || '—'}</td>
                       <td className="px-4 py-3"><StatusBadge status={c.status} /></td>
                       <td className="px-4 py-3">
-                        {NEXT_STATUS[c.status].length > 0 && (
-                          <button onClick={() => setChanging(c)}
-                            className="text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
-                            Cambiar estado
+                        <div className="flex items-center gap-3">
+                          <button onClick={() => handleDownloadPdf(c)} disabled={downloading === c.id}
+                            className="flex items-center gap-1 text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0 disabled:opacity-50">
+                            <FileDown className="w-3.5 h-3.5" strokeWidth={2} />
+                            {downloading === c.id ? 'Generando...' : 'PDF'}
                           </button>
-                        )}
+                          {NEXT_STATUS[c.status].length > 0 && (
+                            <button onClick={() => setChanging(c)}
+                              className="text-xs text-indigo-600 hover:underline cursor-pointer bg-transparent border-0 p-0">
+                              Cambiar estado
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}

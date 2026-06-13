@@ -13,18 +13,29 @@ const PARAM_META = {
   tasa_pension:       { label: 'Tasa pensión (empleado)',     group: 'ss',     type: 'percent',  description: 'Porcentaje de descuento por pensión que asume el empleado. Base legal: 4%.' },
   tasa_solidaridad:   { label: 'Fondo de solidaridad',        group: 'ss',     type: 'percent',  description: 'Descuento adicional de pensión para salarios altos. Base legal: 1%.' },
   limite_solidaridad: { label: 'Límite solidaridad',          group: 'ss',     type: 'factor',   description: 'El fondo aplica cuando IBC > este valor × SMMLV. Ej: 4 significa "más de 4 salarios mínimos".' },
+
+  extra_multiplier:          { label: 'Hora extra diurna (HED)',                  group: 'recargos', type: 'multiplier', description: 'Recargo legal por hora extra diurna. Base legal: 25% adicional (factor 1.25).' },
+  extra_noct_multiplier:     { label: 'Hora extra nocturna (HEN)',                group: 'recargos', type: 'multiplier', description: 'Recargo legal por hora extra nocturna. Base legal: 75% adicional (factor 1.75).' },
+  night_multiplier:          { label: 'Recargo nocturno (RN)',                    group: 'recargos', type: 'multiplier', description: 'Recargo legal por trabajo nocturno habitual. Base legal: 35% adicional (factor 1.35).' },
+  surcharge_multiplier:      { label: 'Recargo nocturno general (RN)',            group: 'recargos', type: 'multiplier', description: 'Recargo legal por horas con recargo. Base legal: 35% adicional (factor 1.35).' },
+  sunday_holiday_multiplier: { label: 'Recargo dominical/festivo (RDF)',          group: 'recargos', type: 'multiplier', description: 'Recargo legal por trabajo en domingo o festivo. Base legal: 75% adicional (factor 1.75).' },
+  extra_diur_dom_multiplier: { label: 'Hora extra diurna dominical/festiva (HEDDF)', group: 'recargos', type: 'multiplier', description: 'Recargo legal por hora extra diurna en domingo o festivo. Base legal: 100% adicional (factor 2.00).' },
+  extra_noct_dom_multiplier: { label: 'Hora extra nocturna dominical/festiva (HENDF)', group: 'recargos', type: 'multiplier', description: 'Recargo legal por hora extra nocturna en domingo o festivo. Base legal: 150% adicional (factor 2.50).' },
+  rec_dom_noct_multiplier:   { label: 'Recargo nocturno dominical/festivo (RNDF)', group: 'recargos', type: 'multiplier', description: 'Recargo legal por trabajo nocturno en domingo o festivo. Base legal: 110% adicional (factor 2.10).' },
 }
 
 const GROUPS = [
-  { key: 'legal', title: 'Parámetros legales', description: 'Valores fijados por ley cada año. Actualizar al inicio de cada vigencia.' },
-  { key: 'ss',    title: 'Seguridad social — empleado', description: 'Tasas de descuento que aplican al empleado. Los aportes del empleador se gestionan por separado.' },
+  { key: 'legal',    title: 'Parámetros legales', description: 'Valores fijados por ley cada año. Actualizar al inicio de cada vigencia.' },
+  { key: 'ss',       title: 'Seguridad social — empleado', description: 'Tasas de descuento que aplican al empleado. Los aportes del empleador se gestionan por separado.' },
+  { key: 'recargos', title: 'Factores de horas extra y recargos', description: 'Factores legales (CST art. 168 + Ley 789/2002) usados para calcular horas extra y recargos. Los turnos o tasas por grupo/cargo pueden anular estos valores para casos específicos.' },
 ]
 
 function formatValue(value, type) {
   const n = Number(value)
-  if (type === 'currency') return `$${n.toLocaleString('es-CO')}`
-  if (type === 'percent')  return `${(n * 100).toFixed(1)}%`
-  if (type === 'factor')   return `${n} × SMMLV`
+  if (type === 'currency')   return `$${n.toLocaleString('es-CO')}`
+  if (type === 'percent')    return `${(n * 100).toFixed(1)}%`
+  if (type === 'factor')     return `${n} × SMMLV`
+  if (type === 'multiplier') return `${n.toFixed(2)}×`
   return String(n)
 }
 
@@ -65,7 +76,7 @@ function SettingRow({ row, meta, onSave, isAdmin }) {
     } finally { setSaving(false) }
   }
 
-  const suffix = meta.type === 'percent' ? '%' : meta.type === 'factor' ? '× SMMLV' : ''
+  const suffix = meta.type === 'percent' ? '%' : meta.type === 'factor' ? '× SMMLV' : meta.type === 'multiplier' ? '×' : ''
   const prefix = meta.type === 'currency' ? '$' : ''
 
   return (
@@ -83,7 +94,7 @@ function SettingRow({ row, meta, onSave, isAdmin }) {
               {prefix && <span className="text-xs text-gray-400">{prefix}</span>}
               <input
                 type="number"
-                step={meta.type === 'percent' ? '0.01' : meta.type === 'currency' ? '1000' : '0.5'}
+                step={meta.type === 'percent' ? '0.01' : meta.type === 'currency' ? '1000' : meta.type === 'multiplier' ? '0.01' : '0.5'}
                 min="0"
                 value={input}
                 onChange={e => setInput(e.target.value)}

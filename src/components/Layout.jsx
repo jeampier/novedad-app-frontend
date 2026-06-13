@@ -5,8 +5,8 @@ import { useVersionCheck } from '../hooks/useVersionCheck'
 import UpdateBanner from './UpdateBanner'
 import {
   LayoutDashboard, Users, ClipboardList, FileText, CalendarX, AlertTriangle, Clock3,
-  BadgeDollarSign, CalendarRange, Repeat, CalendarMinus, Percent, CalendarDays, BarChart3,
-  History, Settings2, MonitorCog, UserCog, ShieldCheck, ScrollText, UploadCloud, LogOut,
+  BadgeDollarSign, CalendarRange, Repeat, CalendarMinus, CalendarDays, BarChart3,
+  History, Settings2, MonitorCog, UserCog, ShieldCheck, ScrollText, UploadCloud, LogOut, Flag,
 } from 'lucide-react'
 
 const ICON_PROPS = { className: 'w-5 h-5', strokeWidth: 1.8 }
@@ -26,7 +26,6 @@ const payrollModules = [
   { path: '/payroll/schedule',      label: 'Programación',      icon: <CalendarRange {...ICON_PROPS} /> },
   { path: '/payroll/shift-types',   label: 'Tipos de turno',    icon: <Repeat {...ICON_PROPS} /> },
   { path: '/payroll/absence-types', label: 'Tipos de ausencia', icon: <CalendarMinus {...ICON_PROPS} /> },
-  { path: '/payroll/rate-rules',    label: 'Tasas grupo/cargo', icon: <Percent {...ICON_PROPS} /> },
   { path: '/payroll/periods',       label: 'Períodos',          icon: <CalendarDays {...ICON_PROPS} /> },
   { path: '/payroll/records',         label: 'Consolidado',       icon: <BarChart3 {...ICON_PROPS} /> },
   { path: '/payroll/employee-history', label: 'Historial empleado', icon: <History {...ICON_PROPS} /> },
@@ -39,6 +38,7 @@ const adminModules = [
   { path: '/admin/roles',   label: 'Roles y permisos', icon: <ShieldCheck {...ICON_PROPS} /> },
   { path: '/admin/audit',        label: 'Auditoría',  icon: <ScrollText {...ICON_PROPS} /> },
   { path: '/admin/bulk-import',  label: 'Carga masiva', icon: <UploadCloud {...ICON_PROPS} /> },
+  { path: '/admin/holidays',      label: 'Festivos',     icon: <Flag {...ICON_PROPS} /> },
 ]
 
 function ChevronIcon({ open }) {

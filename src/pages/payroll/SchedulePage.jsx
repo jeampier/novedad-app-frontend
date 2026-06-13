@@ -50,6 +50,20 @@ function processData(rows, year, month) {
   return { employees: Object.values(empMap).sort((a,b) => a.name.localeCompare(b.name)), days, schedMap }
 }
 
+function coverageOf(empId, days, schedMap) {
+  let scheduled = 0
+  for (const d of days) {
+    if (schedMap[`${empId}_${d}`]) scheduled++
+  }
+  return { scheduled, total: days.length }
+}
+
+function coverageColor({ scheduled, total }) {
+  if (scheduled === total) return '#10B981'
+  if (scheduled === 0)     return '#EF4444'
+  return '#F59E0B'
+}
+
 function dayLabel(year, month, day) {
   const d = new Date(year, month - 1, day)
   const w = WEEK[d.getDay()]
@@ -384,6 +398,9 @@ export default function SchedulePage() {
                   <th className="sticky left-0 z-20 bg-gray-50 border-b border-r border-gray-100 px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-48">
                     Empleado
                   </th>
+                  <th className="border-b border-r border-gray-100 px-3 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    Cobertura
+                  </th>
                   {days.map(d => {
                     const { label, isSun } = dayLabel(year, month, d)
                     return (
@@ -404,6 +421,17 @@ export default function SchedulePage() {
                       <p className="font-medium text-gray-800 text-sm leading-tight">{emp.name}</p>
                       <p className="text-gray-400 text-xs truncate max-w-40">{emp.position}{emp.group ? ` · ${emp.group}` : ''}</p>
                     </td>
+                    {(() => {
+                      const cov = coverageOf(emp.id, days, schedMap)
+                      return (
+                        <td className="border-b border-r border-gray-100 px-3 py-2.5 text-center whitespace-nowrap">
+                          <span className="text-xs font-semibold px-2 py-1 rounded-lg"
+                            style={{ background: hexToRgba(coverageColor(cov), 0.12), color: coverageColor(cov) }}>
+                            {cov.scheduled}/{cov.total}
+                          </span>
+                        </td>
+                      )
+                    })()}
                     {days.map(d => {
                       const { isSun } = dayLabel(year, month, d)
                       const entry = schedMap[`${emp.id}_${d}`]

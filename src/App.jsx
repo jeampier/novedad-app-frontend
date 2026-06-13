@@ -15,11 +15,11 @@ import BulkImportPage  from './pages/admin/BulkImportPage'
 import ConceptsPage    from './pages/payroll/concepts/ConceptsPage'
 import SchedulePage    from './pages/payroll/SchedulePage'
 import ShiftTypesPage  from './pages/payroll/ShiftTypesPage'
+import HolidaysPage    from './pages/payroll/HolidaysPage'
 import PeriodsPage     from './pages/payroll/PeriodsPage'
 import RecordsPage          from './pages/payroll/RecordsPage'
 import PayrollSettingsPage  from './pages/payroll/PayrollSettingsPage'
 import AbsenceTypesPage          from './pages/payroll/AbsenceTypesPage'
-import PayrollRateRulesPage      from './pages/payroll/PayrollRateRulesPage'
 import EmployeeHistoryPage       from './pages/payroll/EmployeeHistoryPage'
 import RequestsPage              from './pages/requests/RequestsPage'
 import ContractsPage             from './pages/contracts/ContractsPage'
@@ -58,7 +58,6 @@ export default function App() {
           <Route path="/payroll/records"       element={<PrivateRoute><RecordsPage /></PrivateRoute>} />
           <Route path="/payroll/settings"       element={<PrivateRoute><PayrollSettingsPage /></PrivateRoute>} />
           <Route path="/payroll/absence-types" element={<PrivateRoute><AbsenceTypesPage /></PrivateRoute>} />
-          <Route path="/payroll/rate-rules"       element={<PrivateRoute><PayrollRateRulesPage /></PrivateRoute>} />
           <Route path="/payroll/employee-history" element={<PrivateRoute><EmployeeHistoryPage /></PrivateRoute>} />
           <Route path="/payroll/periods/:id/schedule" element={<PrivateRoute><PeriodScheduleGridPage /></PrivateRoute>} />
           <Route path="/admin"                element={<AdminRoute><AdminPage /></AdminRoute>} />
@@ -66,6 +65,7 @@ export default function App() {
           <Route path="/admin/roles"          element={<AdminRoute><RolesPage /></AdminRoute>} />
           <Route path="/admin/audit"          element={<AdminRoute><AuditPage /></AdminRoute>} />
           <Route path="/admin/bulk-import"   element={<AdminRoute><BulkImportPage /></AdminRoute>} />
+          <Route path="/admin/holidays"      element={<AdminRoute><HolidaysPage /></AdminRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

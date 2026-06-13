@@ -15,3 +15,6 @@ export const create = (payload) =>
 
 export const updateStatus = (id, status) =>
   dispatch('UpdateContractStatus', { id, status })
+
+export const downloadPdf = (id) =>
+  http.get(`/contracts/${id}/pdf`, { responseType: 'blob' }).then(r => r.data)

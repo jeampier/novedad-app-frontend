@@ -7,10 +7,6 @@ const EMPTY = {
   totalHours: '', ordinaryHours: '',
   extraHours: '', extraDiurDomHours: '', extraNoctHours: '', extraNoctDomHours: '',
   nightHours: '', surchargeHours: '', sundayHolidayHours: '', recDomNoctHours: '',
-  extraMultiplier: '1.25', extraDiurDomMultiplier: '1.75',
-  extraNoctMultiplier: '1.75', extraNoctDomMultiplier: '2.10',
-  nightMultiplier: '1.35', surchargeMultiplier: '1.35',
-  sundayHolidayMultiplier: '1.75', recDomNoctMultiplier: '2.10',
   color: '#3B82F6', active: true,
 }
 
@@ -69,10 +65,6 @@ export default function ShiftTypesPage() {
       extraNoctHours: st.extra_noct_hours ?? 0, extraNoctDomHours: st.extra_noct_dom_hours ?? 0,
       nightHours: st.night_hours, surchargeHours: st.surcharge_hours,
       sundayHolidayHours: st.sunday_holiday_hours, recDomNoctHours: st.rec_dom_noct_hours ?? 0,
-      extraMultiplier: st.extra_multiplier, extraDiurDomMultiplier: st.extra_diur_dom_multiplier ?? 1.75,
-      extraNoctMultiplier: st.extra_noct_multiplier ?? 1.75, extraNoctDomMultiplier: st.extra_noct_dom_multiplier ?? 2.10,
-      nightMultiplier: st.night_multiplier, surchargeMultiplier: st.surcharge_multiplier,
-      sundayHolidayMultiplier: st.sunday_holiday_multiplier, recDomNoctMultiplier: st.rec_dom_noct_multiplier ?? 2.10,
       color: st.color || '#3B82F6', active: st.active,
     })
     setError(''); setModal('form')
@@ -220,28 +212,9 @@ export default function ShiftTypesPage() {
               </div>
             </div>
 
-            {/* Multiplicadores */}
-            <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Multiplicadores de pago</p>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  ['Extra diurna ×',       'extraMultiplier'],
-                  ['Extra diurna dom. ×',  'extraDiurDomMultiplier'],
-                  ['Extra nocturna ×',     'extraNoctMultiplier'],
-                  ['Extra noct. dom. ×',   'extraNoctDomMultiplier'],
-                  ['Rec. nocturno ×',      'nightMultiplier'],
-                  ['Rec. general ×',       'surchargeMultiplier'],
-                  ['Rec. dom. diurno ×',   'sundayHolidayMultiplier'],
-                  ['Rec. dom. noct. ×',    'recDomNoctMultiplier'],
-                ].map(([label, key]) => (
-                  <div key={key}>
-                    <label className="text-xs text-gray-500 mb-1 block">{label}</label>
-                    <input className={inp} type="number" step="0.01" min="0"
-                      value={form[key]} onChange={change(key)} />
-                  </div>
-                ))}
-              </div>
-            </div>
+            <p className="text-xs text-gray-400 -mt-1">
+              Los multiplicadores de pago (recargos y horas extra) se configuran globalmente en <span className="font-medium text-gray-500">Configuración de nómina → Factores de horas extra y recargos</span>.
+            </p>
 
             {/* Color */}
             <div>
