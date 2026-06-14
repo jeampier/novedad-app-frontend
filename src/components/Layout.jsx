@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useVersionCheck } from '../hooks/useVersionCheck'
 import UpdateBanner from './UpdateBanner'
+import NotificationBell from './NotificationBell'
 import {
   LayoutDashboard, Users, ClipboardList, FileText, CalendarX, AlertTriangle, Clock3,
   BadgeDollarSign, CalendarRange, Repeat, CalendarMinus, CalendarDays, BarChart3,
@@ -181,6 +182,9 @@ export default function Layout({ children }) {
 
       {/* Contenido */}
       <main className="flex-1 bg-gray-50 min-h-screen" style={{ marginLeft: 240 }}>
+        <header className="sticky top-0 z-10 flex justify-end items-center px-6 py-2.5 bg-white border-b border-gray-100">
+          <NotificationBell />
+        </header>
         {update && (
           <UpdateBanner
             version={update.version}
