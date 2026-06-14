@@ -16,6 +16,7 @@ import ConceptsPage    from './pages/payroll/concepts/ConceptsPage'
 import SchedulePage    from './pages/payroll/SchedulePage'
 import ShiftTypesPage  from './pages/payroll/ShiftTypesPage'
 import HolidaysPage    from './pages/payroll/HolidaysPage'
+import ScheduledTasksPage from './pages/admin/ScheduledTasksPage'
 import PeriodsPage     from './pages/payroll/PeriodsPage'
 import RecordsPage          from './pages/payroll/RecordsPage'
 import PayrollSettingsPage  from './pages/payroll/PayrollSettingsPage'
@@ -66,6 +67,7 @@ export default function App() {
           <Route path="/admin/audit"          element={<AdminRoute><AuditPage /></AdminRoute>} />
           <Route path="/admin/bulk-import"   element={<AdminRoute><BulkImportPage /></AdminRoute>} />
           <Route path="/admin/holidays"      element={<AdminRoute><HolidaysPage /></AdminRoute>} />
+          <Route path="/admin/scheduled-tasks" element={<AdminRoute><ScheduledTasksPage /></AdminRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

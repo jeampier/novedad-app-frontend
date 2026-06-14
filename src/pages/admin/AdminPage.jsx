@@ -14,6 +14,7 @@ const quickLinks = [
   { path: '/admin/roles',   label: 'Roles y permisos',       desc: 'Configurar roles y matriz de permisos' },
   { path: '/admin/audit',   label: 'Registro de auditoría',  desc: 'Actividad del sistema y cambios' },
   { path: '/admin/logins',  label: 'Historial de accesos',   desc: 'Intentos de login y sesiones' },
+  { path: '/admin/scheduled-tasks', label: 'Tareas programadas', desc: 'Cálculo y cierre automático de períodos' },
 ]
 
 export default function AdminPage() {
